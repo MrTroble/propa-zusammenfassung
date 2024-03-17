@@ -54,7 +54,11 @@ length l -- length of the list
 concat [l1, l2, l3] -- Flattens elements of l to one list
 filter pre l -- Filter list with predicate
 map f l -- Maps each element to an other with the function
-zipWith f l1 l2 -- 
+zipWith f l1 l2 -- Apply f l1x l2x
+[x | x <- l] -- List generation
+[x | x<-l, pred x] -- List with filter
+fst t -- first element of tuple
+snd t -- second element of tuple
 ```
 
 > Foldr/Foldl
@@ -65,6 +69,12 @@ foldr op i (x:xs) = op x (foldr op i xs)
 
 foldl op i [] = i
 foldl op i (x:xs) = foldl op (op i x) xs
+```
+
+> Streams/Lazy eval
+
+```haskell
+ones = 1 : ones -- Stream with unlimited ones
 ```
 
 ### Lambdas/Bindings
@@ -85,6 +95,16 @@ f x = let c = 200
 f x = x * c
       where c = 200
 -- More power then let as it allows self recursion
+-- Use function as infix notation
+1 `div` 0
+1 `mod` 0 
 ```
 
 > WHITESPACE SENSITIVE!
+
+### Numerical Functions
+
+```haskell
+div a b -- calculates integer division a/b
+mod a b -- calculates integer modulus a % b
+```
