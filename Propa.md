@@ -159,7 +159,8 @@ data Stack t = Empty | Stacked t (Stack t)
 
 ## Prolog
 
-Basic program structure:
+> Basic program structure
+
 ```prolog
 %! Facts ("." as separator)
 liebt(hans,inge).
@@ -172,7 +173,8 @@ liebt(hugo,X) :- liebt(inge,X).
 ?liebt(fritz,fisch).
 ```
 
-Different Terms:
+> Different Terms
+
 ```prolog
 %! Atoms (lowercase)
 hans, inge, franz
@@ -187,7 +189,8 @@ X, Y, Z
 _
 ```
 
-Common Operators:
+> Common Operators
+
 ```prolog
 X  *  Y %! Logical AND (Multiplication)
 X  +  Y %! Logical OR (Addition)
@@ -199,7 +202,8 @@ X =:= Y %! Equal
 X =\= Y %! Not equal
 ```
 
-Lists:
+> Lists
+
 ```prolog
 [] %! Empty list literal
 [X|Y] %! Cons Operator, X is head, Y is tail
@@ -213,7 +217,8 @@ rev([],[]).
 rev([X|R],Y) :- rev(R,Y1),append(Y1,[X],Y).
 ```
 
-Constructing function-like predicates:
+> Constructing function-like predicates
+
 ```prolog
 fib(0,0). %! First fibonacci number is zero
 fib(1,1). %! Second fibonacci number is one
@@ -223,9 +228,10 @@ fib(X,Y) :- X>1,
     Y is Y1+Y2.
 ```
 
-A predicate is said to be *deterministic* if it has at most one solution, otherwise it is *nondeterministic*.
+> A predicate is said to be *deterministic* if it has at most one solution, otherwise it is *nondeterministic*.
 
-Cutting off the backtrack-tree:
+### Cutting off the backtrack-tree
+
 ```prolog
 %! "!" operator used to eliminate choice points
 %! Equivalent to saying "do not backtrack prior to this point"
@@ -268,11 +274,12 @@ Y = 2
 %! ...because once prolog has found a X that satisfies a(X) it will
 %! never backtrack to find a different candidate for X.
 ```
-*Green* cuts make the program more efficient, without changing results.
-*Red* cuts eliminate some solution (potentially making the predicate deterministic)
 
+> *Green* cuts make the program more efficient, without changing results.
+> *Red* cuts eliminate some solution (potentially making the predicate deterministic)
 
 Miscellaneous Utilities:
+
 ```prolog
 fail    %! predicate that always fails
 call(X) %! evaluates X and fails if X fails
