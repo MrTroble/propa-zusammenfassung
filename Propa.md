@@ -58,7 +58,8 @@ zipWith f l1 l2 -- Apply f l1x l2x
 [x | x <- l] -- List generation
 [x | x<-l, pred x] -- List with filter
 fst t -- first element of tuple
-snd t -- second element of tuple
+snd t -- second element of tuple,
+insert x s -- inserts at front
 ```
 
 > Foldr/Foldl
@@ -107,4 +108,48 @@ f x = x * c
 ```haskell
 div a b -- calculates integer division a/b
 mod a b -- calculates integer modulus a % b
+isDigit c -- checks if char is a digit
+```
+
+### Typisierung
+
+```haskell
+e :: t -- e is type t
+s -> t -- function type
+(3,True) :: (Integer,Bool) -- Tuple type
+[Type] -- List type
+type String = [Char] -- Type aliases
+```
+
+> Basic Types
+
+```haskell
+Int -- integer Numbers with max 32bit
+Integer -- integer Numbers infinite size
+Float -- floating Point 32bit
+Double -- floating Point 64bit
+Bool -- Boolean value
+Char -- Unicode-Character
+```
+
+> Data Types
+
+```haskell
+data People = Person String Int -- Data class
+-- function taking data constructor
+isAdult :: People -> Bool
+isAdult (Person name age) = (age>=18)
+-- alternative constructors
+data Shape = Circle Double -- Radius
+           | Rectangle Double Double -- Lengths
+-- Enums
+data Season = Spring | Summer | Autumn | Winter
+```
+
+> Polymorphic Data Types
+
+```haskell
+data Maybe t = Nothing | Just t -- t is any type
+
+data Stack t = Empty | Stacked t (Stack t)
 ```
