@@ -1,5 +1,8 @@
 # Propa
 
+* [Haskell](#haskell)
+* [Prolog](#prolog)
+
 ## Haskell
 
 > Definitionen Funktion f
@@ -152,4 +155,125 @@ data Season = Spring | Summer | Autumn | Winter
 data Maybe t = Nothing | Just t -- t is any type
 
 data Stack t = Empty | Stacked t (Stack t)
+```
+
+## Prolog
+
+Basic program structure:
+```prolog
+%! Facts ("." as separator)
+liebt(hans,inge).
+liebt(heinz,inge).
+
+%! Rules (Implication indicated by ":-" )
+liebt(hugo,X) :- liebt(inge,X).
+
+%! Queries
+?liebt(fritz,fisch).
+```
+
+Different Terms:
+```prolog
+%! Atoms (lowercase)
+hans, inge, franz
+
+%! Numbers
+1, 2, 3.5
+
+%! Variables (uppercase, can hold any one value)
+X, Y, Z
+
+%! Underscore: special variable -> does not matter
+_
+```
+
+Common Operators:
+```prolog
+X  *  Y %! Logical AND (Multiplication)
+X  +  Y %! Logical OR (Addition)
+X  #  Y %! Logical XOR
+  ~X    %! Logical NOT (Negation)
+X >=  Y %! Greater than or equal
+X =<  Y %! Less than or equal %! implication
+X =:= Y %! Equal
+X =\= Y %! Not equal
+```
+
+Lists:
+```prolog
+[] %! Empty list literal
+[X|Y] %! Cons Operator, X is head, Y is tail
+
+%! Example (Reversing a list):
+
+%! The reverse of the empty list is the empty list
+rev([],[]).
+%! If reversing [X|R] gives Y, then concatenating X with the
+%! reverse of R also gives Y
+rev([X|R],Y) :- rev(R,Y1),append(Y1,[X],Y).
+```
+
+Constructing function-like predicates:
+```prolog
+fib(0,0). %! First fibonacci number is zero
+fib(1,1). %! Second fibonacci number is one
+fib(X,Y) :- X>1,
+    X1 is X-1, X2 is X-2,
+    fib(X1,Y1), fib(X2,Y2),
+    Y is Y1+Y2.
+```
+
+A predicate is said to be *deterministic* if it has at most one solution, otherwise it is *nondeterministic*.
+
+Cutting off the backtrack-tree:
+```prolog
+%! "!" operator used to eliminate choice points
+%! Equivalent to saying "do not backtrack prior to this point"
+max(X,Y,X) :- X>Y,!.
+max(X,Y,Y) :- X=<Y.
+%! Using a cutoff here makes sense, since both candidates are 
+%! mutually exclusive
+
+%! Assume the following knowledge base
+a(1). a(2).
+b(1). b(2).
+foo(X, Y) :- a(X), b(Y).
+
+%! Then
+?- foo(X, Y).
+
+X = 1
+Y = 1 ? a
+
+X = 1
+Y = 2
+
+X = 2
+Y = 1
+
+X = 2
+Y = 2
+
+%! Because Prolog has choice points for both X and Y.
+%! If "foo" was instead defined as 
+foo(X, Y) :- a(X), !, b(Y).
+%! then the results look like this
+?- foo(X, Y).
+
+X = 1
+Y = 1 ? a
+
+X = 1
+Y = 2
+%! ...because once prolog has found a X that satisfies a(X) it will
+%! never backtrack to find a different candidate for X.
+```
+*Green* cuts make the program more efficient, without changing results.
+*Red* cuts eliminate some solution (potentially making the predicate deterministic)
+
+
+Miscellaneous Utilities:
+```prolog
+fail    %! predicate that always fails
+call(X) %! evaluates X and fails if X fails
 ```
