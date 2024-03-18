@@ -2,6 +2,7 @@
 
 * [Haskell](#haskell)
 * [Prolog](#prolog)
+* [MPI](#mpi)
 
 ## Haskell
 
@@ -262,7 +263,7 @@ X =:= Y %! Equal
 X =\= Y %! Not equal
 ```
 
-> Common Functions
+> Common Predicates
 
 ```prolog
 not(X). %! Inverse of X
@@ -350,4 +351,84 @@ Miscellaneous Utilities:
 ```prolog
 fail    %! predicate that always fails
 call(X) %! evaluates X and fails if X fails
+```
+
+## MPI
+
+> Communicators are sub groups of processes which can communicate between each other. `MPI_COMM_WORLD` default
+
+```c
+// Init and Teardown
+MPI_Init(&argc, &args);
+MPI_Finalize();
+
+// Amount of processes and current process number (rank)
+int size, my_rank;
+MPI_Comm_size(MPI_COMM_WORLD, &size);
+MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+
+// Waits until all process hit this barrier
+MPI_Barrier(MPI_COMM_WORLD);
+```
+
+> Communications
+
+```c
+// Blocking until buffer can be (re)used
+int MPI_Send( void* buffer, int count, MPI_Datatype datatype,
+              int dest, int tag, MPI_Comm comm);
+
+// Tag and source can be wildcard
+// (MPI_ANY_SOURCE, MPI_ANY_TAG)
+int MPI_Recv( void* buffer, int count, MPI_Datatype datatype,
+              int source, int tag, MPI_Comm comm, MPI_Status* status)
+
+// Both with auto deadlock prevention
+// _replace variant available (Only one buffer)
+int MPI_Sendrecv(const void *sendbuf, int sendcount, 
+     MPI_Datatype sendtype, int dest, 
+     int sendtag, void *recvbuf, int recvcount,
+     MPI_Datatype recvtype, int source, int recvtag,
+     MPI_Comm comm, MPI_Status *status)
+
+// None blocking nearly identical to blocking
+// Buffer can not safely be reused
+int MPI_Isend(/*MPI_Send w/o status, Out:*/ MPI_Request* request);
+int MPI_Irecv(/*MPI_Recv w/o status, Out:*/ MPI_Request* request);
+// Fence behavior for MPI_Request, to later check status
+int MPI_Test(MPI_Request* r, int* flag, MPI_Status* s);
+int MPI_Wait(MPI_Request* r, MPI_Status* s);
+```
+
+> Collective operations
+
+```c
+// Broadcast to all processes
+int MPI_Bcast(void* buffer, int count, MPI_Datatype t,
+              int root, MPI_Comm comm);
+```
+
+> Communication Types for Sending
+
+Does not effect receive.
+`MPI_Sendrecv` is always blocking.
+
+* Synchronous: Waiting on both sides, no buffering
+  * `MPI_Ssend`
+* Buffered: Buffers, no synchronization (no knowledge of receive)
+  * `MPI_Bsend`
+* Ready: Receive must be ready, no sync, no buffer (garbage)
+  * `MPI_Rsend`
+* Standard: IMPLEMENTATION DEFINED YIPPPI
+  * `MPI_Send`
+
+> MPI_Datatype
+
+```text
+MPI_CHAR
+MPI_INT8_T / MPI_UINT8_T
+MPI_INT16_T / MPI_UINT16_T
+MPI_INT32_T / MPI_UINT32_T
+MPI_INT64_T / MPI_UINT64_T
+MPI_FLOAT / MPI_DOUBLE / MPI_LONG_DOUBLE
 ```
