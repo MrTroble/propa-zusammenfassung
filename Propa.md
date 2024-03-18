@@ -153,8 +153,67 @@ data Season = Spring | Summer | Autumn | Winter
 
 ```haskell
 data Maybe t = Nothing | Just t -- t is any type
-
+-- Recursive Data Type
 data Stack t = Empty | Stacked t (Stack t)
+```
+
+### Concepts/Typeclasses
+
+```haskell
+qsort :: Ord t => [t] -> [t] -- Any list type function with 
+```
+
+> Standard concepts
+
+![Types](./types.png)
+
+> Important standard implementation
+
+```haskell
+-- Eq t
+(==) :: t -> t -> Bool
+(/=) :: t -> t -> Bool
+-- Ord t (derivativ of Eq)
+(<=) :: t -> t -> Bool
+(<) :: t -> t -> Bool 
+-- ...
+-- Show t
+show :: t -> String
+-- Enum t
+succ :: t -> t 
+pred :: t -> t
+toEnum :: Int -> t 
+fromEnum :: t -> Int
+enumFromTo :: t -> t -> [t]
+-- Num t
+(+) :: t -> t -> t -- (*); (-)
+abs :: t -> t
+negate :: t -> t
+signum :: t -> t
+fromInteger :: Integer -> t
+```
+
+> Own type classes
+
+```haskell
+class Eq t where -- define new concept/class
+    -- define required functions (interface)
+    (==) :: t -> t -> Bool
+    (/=) :: t -> t -> Bool
+
+instance Eq Bool where -- create instance
+    -- concrete implementations
+    True == True = True
+    False == False = True
+    -- ...; /= not needed, can be inferred
+
+-- Derivation of concepts (Ord derives from Eq)
+class (Eq t) => Ord t where
+    compare :: t -> t -> Ordering
+
+-- Generic instantiation, for any s, t
+instance (Eq s,Eq t) => Eq (s,t) where
+    (a,b) == (a’,b’) = (a==a’) && (b==b’)
 ```
 
 ## Prolog
