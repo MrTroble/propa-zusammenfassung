@@ -62,7 +62,8 @@ zipWith f l1 l2 -- Apply f l1x l2x
 [x | x<-l, pred x] -- List with filter
 fst t -- first element of tuple
 snd t -- second element of tuple,
-insert x s -- inserts at front
+insert x l -- inserts at front
+reverse l -- reverses a list
 ```
 
 > Foldr/Foldl
@@ -259,6 +260,13 @@ X >=  Y %! Greater than or equal
 X =<  Y %! Less than or equal %! implication
 X =:= Y %! Equal
 X =\= Y %! Not equal
+```
+
+> Common Functions
+
+```prolog
+not(X). %! Inverse of X
+member(X, LIST). %! Checks if X is element of LIST
 ```
 
 > Lists
