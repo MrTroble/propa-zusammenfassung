@@ -402,11 +402,15 @@ int MPI_Wait(MPI_Request* r, MPI_Status* s);
 
 > Collective operations
 
+Every process needs to participate in the operation hence need to receive or start the respektive operations needed.
+
 ```c
 // Broadcast to all processes
 int MPI_Bcast(void* buffer, int count, MPI_Datatype t,
               int root, MPI_Comm comm);
 ```
+
+![Operations](ops.png)
 
 > Communication Types for Sending
 
