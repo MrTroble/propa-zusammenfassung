@@ -485,11 +485,19 @@ MPI_MINLOC / MPI_MAXLOC
 
 ## Java
 
+Lambdas:
+
+```java
+() -> {}; // Runnable
+() -> {return V;}; // Callable<V>, Supplier<R>
+(R, T) -> {}; // BiConsumer<R, T>
+R -> {}; // Consumer<R>
+
+```
+
 > Thread/Synchronisation
 
 ```java
-() -> {}; // Runnable Lambda
-
 public class Thread implements Runnable {
   public Thread(String name);
   public Thread(Runnable target);
@@ -540,4 +548,40 @@ public void doSomething() {
     lock.unlock();
   }
 }
+```
+
+> Barriers/Executors
+
+`CyclicBarrier(int n)` (reusable)
+`await()` blocks the calling thread
+If `await()` was called n times, all threads resume
+`await()` blocks the calling thread
+`CountDownLatch(int n)` (not reusable)
+If `countdown()` was called n times, all threads resume
+Further calls to `await()` return immediately
+
+```Java
+// Possible: newCachedThreadPool
+ExecutorService es = Executors.[...];
+Future<V> f = es.submit(Callable<T> task);
+f.get(); // Waits until completion and gets result
+f.isDone(); // Checks if completed
+```
+
+> Streams
+
+* filter,
+* map, reduce,
+* collect,
+* findAny, findFirst,
+* min, max,
+
+```Java
+var personsInAuditorium = new ArrayList<Person>();
+var average = personsInAuditorium
+                .stream()
+                .filter(Person::isStudent)
+                .mapToInt(Person::getAge)
+                .average()
+                .getAsDouble();
 ```
