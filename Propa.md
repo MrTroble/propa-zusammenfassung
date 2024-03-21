@@ -405,9 +405,47 @@ int MPI_Wait(MPI_Request* r, MPI_Status* s);
 Every process needs to participate in the operation hence need to receive or start the respektive operations needed.
 
 ```c
-// Broadcast to all processes
-int MPI_Bcast(void* buffer, int count, MPI_Datatype t,
+// Broadcast to all processes (One to All)
+int MPI_Bcast(void* buffer, int count, MPI_Datatype type,
               int root, MPI_Comm comm);
+
+// Send split data to all processes (One to All)
+// Distribute evenly the memory (sendcount per element)
+// FF: (v=Vector variant) int* scounts, int* displacements
+int MPI_Scatter(void* sbuf, int scount, MPI_Datatype stype,
+                void* rbuf, int rcount, MPI_Datatype rtype,
+                int root, MPI_Comm comm);
+// Inverse operation of scatter (All to One)
+int MPI_Gather(/*same as scatter*/);
+// Gather + Broadcast (All to All)
+int MPI_Allgather(/*same as scatter w/o root*/);
+// Scatter for each process (All to All)
+int MPI_Alltoall(/*same as Allgather*/);
+// Apply operation to each process and recv result (All to One)
+int MPI_Reduce(void* sbuf, void* rbuf, int count, MPI_Datatype type, 
+               MPI_Op op, int root, MPI_Comm comm):
+// Allreduce/Reduce-scatter/Scan - Available
+// MapReduce can be realized using MPI
+// Map can be realized using MPI scatter operations
+// Reduce can be realized with MPI reduce operations
+```
+
+> Scatter/Gather Examples
+
+```c
+int total = 0;
+local_array = (int*) malloc(count * sizeof(int));
+if (rank == 0) {
+  size = count * numnodes;
+  send_array =(int*) malloc(size * sizeof(int));
+  back_array =(int*) malloc(numnodes * sizeof(int));
+  for (i = 0; i < size; i++) send_array[i]=i;
+}
+MPI_Scatter(send_array, count, MPI_INT, local_array, count,
+            MPI_INT, 0, MPI_COMM_WORLD);
+// … (each processor sums up his local_array into back_array)
+MPI_Gather(&total, 1, MPI_INT, back_array, 1, MPI_INT, 0,
+           MPI_COMM_WORLD);
 ```
 
 ![Operations](ops.png)
@@ -435,4 +473,12 @@ MPI_INT16_T / MPI_UINT16_T
 MPI_INT32_T / MPI_UINT32_T
 MPI_INT64_T / MPI_UINT64_T
 MPI_FLOAT / MPI_DOUBLE / MPI_LONG_DOUBLE
+```
+
+> MPI Ops
+
+```text
+MPI_LAND / MPI_BAND / MPI_LOR / MPI_BOR
+MPI_MAX / MPI_MIN / MPI_SUM / MPI_PROD
+MPI_MINLOC / MPI_MAXLOC
 ```
