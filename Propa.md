@@ -65,6 +65,8 @@ fst t -- first element of tuple
 snd t -- second element of tuple,
 insert x l -- inserts at front
 reverse l -- reverses a list
+elem e l -- Is element in list
+list !! i -- i th element of list
 ```
 
 > Foldr/Foldl
