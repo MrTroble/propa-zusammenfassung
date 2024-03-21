@@ -482,3 +482,62 @@ MPI_LAND / MPI_BAND / MPI_LOR / MPI_BOR
 MPI_MAX / MPI_MIN / MPI_SUM / MPI_PROD
 MPI_MINLOC / MPI_MAXLOC
 ```
+
+## Java
+
+> Thread/Synchronisation
+
+```java
+() -> {}; // Runnable Lambda
+
+public class Thread implements Runnable {
+  public Thread(String name);
+  public Thread(Runnable target);
+  public void start();
+  public void run();
+}
+// lock / cs / unlock (e.g. lock_guard or os locks)
+synchronized (lockObject) {
+  // critical section
+}
+// Only in synchronized, Fencing wait!
+public final void wait(/*Opt:*/long timeout, int nanos);
+// Fence signal (can be same)
+public final void notify(); // n - 1
+public final void notifyAll(); // all
+```
+
+> Coffman conditions (OS): Mutual exclusion, Hold and wait, No preemption, Circular wait
+
+`volatile` ensures that changes to variables are immediately visible to all threads / processors
+
+> Atomic Types/Locks
+
+AtomicInteger, AtomicBoolean, AtomicReference, AtomicLong
+
+```java
+int get(); // volatile read
+int incrementAndGet(); // ++atomic 
+int decrementAndGet(): // --atomic
+// Checks if value updated and sets if not
+boolean compareAndSet(int oldValue, int newValue);
+// used for lock free programming
+// e.g. compare and set loop
+boolean updated = false;
+while(!updated){
+  long p = this.count.get();
+  updated = this.count.compareAndSet(p, p + 1);
+}
+// Reentrant lock can be reentered (std::recursive_mutex)
+new ReentrantLock(fairLock);
+void lock();
+void unlock();
+boolean tryLock();
+// Use try-finally to have RAII behavior
+public void doSomething() {
+  lock.lock();
+  try {} finally {
+    lock.unlock();
+  }
+}
+```
