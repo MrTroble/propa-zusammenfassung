@@ -3,6 +3,7 @@
 * [Haskell](#haskell)
 * [Prolog](#prolog)
 * [MPI](#mpi)
+* [Java](#java)
 
 ## Haskell
 
@@ -270,6 +271,9 @@ X =\= Y %! Not equal
 ```prolog
 not(X). %! Inverse of X
 member(X, LIST). %! Checks if X is element of LIST
+fail    %! predicate that always fails
+call(X) %! evaluates X and fails if X fails
+append(L1, L2, OUT) %! Appends L1 and L2 to OUT
 ```
 
 > Lists
@@ -299,6 +303,7 @@ fib(X,Y) :- X>1,
 ```
 
 > A predicate is said to be *deterministic* if it has at most one solution, otherwise it is *nondeterministic*.
+> **ARITHMETIK NUR VORWAERTS ANWENDBAR!**
 
 ### Cutting off the backtrack-tree
 
@@ -348,12 +353,37 @@ Y = 2
 > *Green* cuts make the program more efficient, without changing results.
 > *Red* cuts eliminate some solution (potentially making the predicate deterministic)
 
-Miscellaneous Utilities:
+## λ-Calculus
 
-```prolog
-fail    %! predicate that always fails
-call(X) %! evaluates X and fails if X fails
-```
+> Church Bool/Ints
+
+$C_{true} = λt. λf. t$
+$C_{false} = λt. λf. f$
+$C_0 = λs. λz. z$
+$C_1 = λs. λz. s z$
+$C_2 = λs. λz. s (s z)$
+$C_n = λs. λz. s^n z$
+
+> Common Functions
+
+$succ = λn. λs. λz. s (n s z)$
+$plus = λm. λn. λs. λz. m s (n s z)$
+$times = λm. λn. λs. n (m s)$
+$exp = λm. λn. n m$
+$isZero = λn. n (λx. C_{false}) C_{true}$
+
+> Y Combinator
+
+$Y = λf. (λx. f (x x)) (λx. f (x x))$
+
+> **Call-by-name**: reduce most outer left redex (iff not in λ)
+> **Call-by-value**: reduce left redex (if not in λ) and the argument is a value
+
+## Unifikator/Typinferenz
+
+> **Unifikator**: Substitution σ unifiziert Gleichung τ = τ ′, falls στ = στ ′.
+> σ unifiziert C, falls ∀c ∈ C gilt: σ unifiziert c.
+> **Allgemeinster Unifikator**: σ mgu , falls ∀ Unifikator γ ∃ Substitution δ. γ = δ ◦ σ.
 
 ## MPI
 
