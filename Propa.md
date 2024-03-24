@@ -68,6 +68,7 @@ insert x l -- inserts at front
 reverse l -- reverses a list
 elem e l -- Is element in list
 list !! i -- i th element of list
+lookup e [(e, b)] -- Maybe b iff b in map, Nothing otherwise
 ```
 
 > Foldr/Foldl
@@ -357,27 +358,27 @@ Y = 2
 
 > Church Bool/Ints
 
-$C_{true} = λt. λf. t$
-$C_{false} = λt. λf. f$
-$C_0 = λs. λz. z$
-$C_1 = λs. λz. s z$
-$C_2 = λs. λz. s (s z)$
-$C_n = λs. λz. s^n z$
+* $C_{true} = λt. λf. t$
+* $C_{false} = λt. λf. f$
+* $C_0 = λs. λz. z$
+* $C_1 = λs. λz. s z$
+* $C_2 = λs. λz. s (s z)$
+* $C_n = λs. λz. s^n z$
 
 > Common Functions
 
-$succ = λn. λs. λz. s (n s z)$
-$plus = λm. λn. λs. λz. m s (n s z)$
-$times = λm. λn. λs. n (m s)$
-$exp = λm. λn. n m$
-$isZero = λn. n (λx. C_{false}) C_{true}$
+* $succ = λn. λs. λz. s (n s z)$
+* $plus = λm. λn. λs. λz. m s (n s z)$
+* $times = λm. λn. λs. n (m s)$
+* $exp = λm. λn. n m$
+* $isZero = λn. n (λx. C_{false}) C_{true}$
 
 > Y Combinator
 
 $Y = λf. (λx. f (x x)) (λx. f (x x))$
 
-> **Call-by-name**: reduce most outer left redex (iff not in λ)
-> **Call-by-value**: reduce left redex (if not in λ) and the argument is a value
+> **Call-by-name**: reduce most outer left redex (iff not in λ).
+> **Call-by-value**: reduce left redex (if not in λ) and the argument is a value.
 
 ## Unifikator/Typinferenz
 
@@ -617,3 +618,50 @@ var average = personsInAuditorium
                 .average()
                 .getAsDouble();
 ```
+
+## Grammar and Compilers
+
+* $First_k(X)$ a set of all first k terminals that can be produced by X
+  * $X \rightarrow^* \theta => k : \theta$
+* $Follow_k(X)$ a set of all first k terminals that are followings of X
+  * $S \rightarrow^* aXw => First_k(w)$
+* $SSL(k)$ is the set of all Grammars which have disjoint (first) index sets
+  * $First_k(aFollow_k(A)) \cap First_k(bFollow_k(B))$
+* Left recursive cf Grammars are for no k $SSL(k)$
+* Every left recursive cf Grammar can be transformed into a none left recursive Grammar
+
+### Java Byte Code
+
+* Locals: `?load_X`, `?store_X`
+* Constants: `?const_C`
+* Globals: `getfield`, `putfield`
+* Branches: `ifeq`, `ifnull`, `tableswitch`
+  * `goto label`, `ifle`, `ifge` ...
+* Invoke: `invokevirtual`, `invokestatic`
+  * `?return`
+* New: `new`, `newarray`
+* Arithmetic: `?mul`, `?add`
+
+> Definitions
+
+* Objekts: `Ljava/lang/Object;`
+* Primitives: `int=I`, `void=V`, `boolean=Z`
+* Concatenation: `IZIZ` -> `int, boolean, int, boolean`
+* Constructor: `<init>`
+* Static Block: `<clinit>`
+* Methode: `foo(ILjava/lang/Object;)V`
+* Field: `putfield Foo.field:LBar;`
+
+> Arrays
+
+```text
+bipush 10
+newarray int // new int[10]
+astore 1
+aload 1
+bipush 7
+bipush 35
+iastore // array[7] = 35
+```
+
+> Umgekehrte polnische Notation (UPN)
