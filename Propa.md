@@ -665,3 +665,6 @@ iastore // array[7] = 35
 ```
 
 > Umgekehrte polnische Notation (UPN)
+
+first the operands than the actual operator.
+`7 ∗ 4 => 7 4 *`
