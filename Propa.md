@@ -354,37 +354,37 @@ Y = 2
 > *Green* cuts make the program more efficient, without changing results.
 > *Red* cuts eliminate some solution (potentially making the predicate deterministic)
 
-## λ-Calculus
+## $\lambda$-Calculus
 
 > Church Bool/Ints
 
-* $C_{true} = λt. λf. t$
-* $C_{false} = λt. λf. f$
-* $C_0 = λs. λz. z$
-* $C_1 = λs. λz. s z$
-* $C_2 = λs. λz. s (s z)$
-* $C_n = λs. λz. s^n z$
+* $C_{true} = \lambda t. \lambda f. t$
+* $C_{false} = \lambda t. \lambda f. f$
+* $C_0 = \lambda s. \lambda z. z$
+* $C_1 = \lambda s. \lambda z. s z$
+* $C_2 = \lambda s. \lambda z. s (s z)$
+* $C_n = \lambda s. \lambda z. s^n z$
 
 > Common Functions
 
-* $succ = λn. λs. λz. s (n s z)$
-* $plus = λm. λn. λs. λz. m s (n s z)$
-* $times = λm. λn. λs. n (m s)$
-* $exp = λm. λn. n m$
-* $isZero = λn. n (λx. C_{false}) C_{true}$
+* $succ = \lambda n. \lambda s. \lambda z. s (n s z)$
+* $plus = \lambda m. \lambda n. \lambda s. \lambda z. m s (n s z)$
+* $times = \lambda m. \lambda n. \lambda s. n (m s)$
+* $exp = \lambda m. \lambda n. n m$
+* $isZero = \lambda n. n (\lambda x. C_{false}) C_{true}$
 
 > Y Combinator
 
-$Y = λf. (λx. f (x x)) (λx. f (x x))$
+$Y = \lambda f. (\lambda x. f (x x)) (\lambda x. f (x x))$
 
-> **Call-by-name**: reduce most outer left redex (iff not in λ).
-> **Call-by-value**: reduce left redex (if not in λ) and the argument is a value.
+> **Call-by-name**: reduce most outer left redex (iff not in $\lambda$ ).
+> **Call-by-value**: reduce left redex (if not in $\lambda$ ) and the argument is a value.
 
 ## Unifikator/Typinferenz
 
-> **Unifikator**: Substitution σ unifiziert Gleichung τ = τ ′, falls στ = στ ′.
-> σ unifiziert C, falls ∀c ∈ C gilt: σ unifiziert c.
-> **Allgemeinster Unifikator**: σ mgu , falls ∀ Unifikator γ ∃ Substitution δ. γ = δ ◦ σ.
+> **Unifikator**: Substitution $\sigma$ unifiziert Gleichung $\tau$ = $\tau"$ , falls $\sigma$$\tau$ = $\sigma$$\tau"$.
+> $\sigma$ unifiziert C, falls $\forall c \in C$ gilt: $\sigma$ unifiziert c.
+> **Allgemeinster Unifikator**: $\sigma$ mgu , falls $\forall$ Unifikator y $\exists$ Substitution o. y = o $\bullet$ $\sigma$.
 
 ## MPI
 
@@ -667,4 +667,4 @@ iastore // array[7] = 35
 > Umgekehrte polnische Notation (UPN)
 
 first the operands than the actual operator.
-`7 ∗ 4 => 7 4 *`
+`7 * 4 => 7 4 *`
