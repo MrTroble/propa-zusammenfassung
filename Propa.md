@@ -275,6 +275,8 @@ member(X, LIST). %! Checks if X is element of LIST
 fail    %! predicate that always fails
 call(X) %! evaluates X and fails if X fails
 append(L1, L2, OUT) %! Appends L1 and L2 to OUT
+length(L1, LENGTH) %! Gets the length of L1
+permute(l1, l2) %! Checks if L1 is permutation of L2
 ```
 
 > Lists
@@ -632,15 +634,34 @@ var average = personsInAuditorium
 
 ### Java Byte Code
 
-* Locals: `?load_X`, `?store_X`
+* Locals: `?load X`, `?store X`
 * Constants: `?const_C`
 * Globals: `getfield`, `putfield`
 * Branches: `ifeq`, `ifnull`, `tableswitch`
-  * `goto label`, `ifle`, `ifge` ...
+  * `goto label`, `if_icmpgt`, `if_icmpge` ...
 * Invoke: `invokevirtual`, `invokestatic`
   * `?return`
 * New: `new`, `newarray`
-* Arithmetic: `?mul`, `?add`
+* Arithmetic: `?mul`, `?add`, `?div`
+
+ > Beispiel
+
+```java
+while (x<10) { A }
+```
+
+```text
+loopheader:
+  iload 0 // x laden
+  bipush 10
+  if_icmplt loopbody // falls kleiner, springe zu loopbody
+  goto afterloop
+loopbody:
+  A // Schleifenkoerper
+  goto loopheader // (springe zu naechster Iteration)
+afterloop:
+  // weitere Befehle
+```
 
 > Definitions
 
@@ -653,6 +674,11 @@ var average = personsInAuditorium
 * Field: `putfield Foo.field:LBar;`
 
 > Arrays
+
+```java
+int[] array = new int[10];
+array[7] = 35;
+```
 
 ```text
 bipush 10
