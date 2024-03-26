@@ -388,6 +388,10 @@ $Y = \lambda f. (\lambda x. f (x x)) (\lambda x. f (x x))$
 > $\sigma$ unifiziert C, falls $\forall c \in C$ gilt: $\sigma$ unifiziert c.
 > **Allgemeinster Unifikator**: $\sigma$ mgu , falls $\forall$ Unifikator y $\exists$ Substitution o. y = o $\bullet$ $\sigma$.
 
+![Type1](T1.png)
+
+![Type2](T2.png)
+
 ## MPI
 
 > Communicators are sub groups of processes which can communicate between each other. `MPI_COMM_WORLD` default
