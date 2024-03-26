@@ -632,6 +632,38 @@ var average = personsInAuditorium
 * Left recursive cf Grammars are for no k $SSL(k)$
 * Every left recursive cf Grammar can be transformed into a none left recursive Grammar
 
+### Lexer/AST Generation
+
+> Expect function assures correct token and lexes the next one. (Error otherwise)
+
+```java
+String expect(Token tok) {
+  if (lexer.current != tok) { error(); }
+  String s = lexer.ident;
+  lexer.lex();
+  return s;
+}
+```
+
+> Generating AST with left passing and except function. In order to generate a Left-Tree we need to pass in the left.
+
+```java
+Type parseTypeRest(Type left) {
+  switch (lexer.current) {
+  case ARROW:
+    expect(ARROW);
+    Type right = parseType();
+    return new Function(left, right);
+  case RP:
+  case EOF:
+    return left;
+  default:
+    error();
+    return null;
+  }
+}
+```
+
 ### Java Byte Code
 
 * Locals: `?load X`, `?store X`
